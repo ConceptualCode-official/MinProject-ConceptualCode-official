@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>3D Login & Signup Form</title>
+ <!-- Inter Font -->
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+ <!-- Tailwind CSS CDN -->
+ <script src="https://cdn.tailwindcss.com"></script>
+ <!--css link-->
+ <link rel="stylesheet" href="main.css">
+</head>
+
+<body class="flex items-center justify-center min-h-screen p-4 overflow-hidden">
+
+ <div class="container relative">
+  <div class="form-container">
+   <!-- Login Form -->
+   <div class="form-box sign-in-container">
+    <form id="sif" class="flex flex-col items-center w-full max-w-sm">
+     <h1 class="text-3xl font-bold mb-4">Sign in</h1>
+     <div class="input-group w-full mb-4">
+      <input type="email" placeholder="Email" id="signInEmail" class="input-field" />
+      <div id="signInev" class="validation-message"></div>
+     </div>
+     <div class="input-group w-full mb-4">
+      <input type="password" placeholder="Password" id="signInPassword" class="input-field" />
+      <div id="signInpwv" class="validation-message"></div>
+     </div>
+     <a href="#" class="text-sm mb-6 hover:text-white transition-colors duration-300">Forgot your password?</a>
+     <button type="submit" class="btn-vex">Sign In</button>
+     <div id="signIngv" class="validation-message mt-4"></div>
+    </form>
+   </div>
+
+   <!-- Signup Form -->
+   <div class="form-box sign-up-container">
+    <form id="sf" class="flex flex-col items-center w-full max-w-sm">
+     <h1 class="text-3xl font-bold mb-4">Create Account</h1>
+     <div class="input-group w-full mb-4">
+      <input type="text" placeholder="Name" id="signUpName" class="input-field" />
+      <div id="signUpnv" class="validation-message"></div>
+     </div>
+     <div class="input-group w-full mb-4">
+      <input type="email" placeholder="Email" id="signUpEmail" class="input-field" />
+      <div id="signUpev" class="validation-message"></div>
+     </div>
+     <div class="input-group w-full mb-4">
+      <input type="password" placeholder="Password" id="signUpPassword" class="input-field" />
+      <div id="signUppwv" class="validation-message"></div>
+     </div>
+     <div class="input-group w-full mb-4">
+      <input type="password" placeholder="Confirm Password" id="signUpConfirmPassword" class="input-field" />
+      <div id="signUpcmpwv" class="validation-message"></div>
+     </div>
+     <button type="submit" class="btn-vex">Sign Up</button>
+     <div id="signUpgv" class="validation-message mt-4"></div>
+    </form>
+   </div>
+  </div>
+
+  <div class="overlay-container">
+   <div class="overlay">
+    <div class="overlay-panel overlay-left">
+     <h1 class="text-3xl font-bold mb-4">Hey, Dude!</h1>
+     <p class="mb-6 leading-relaxed">Enter your personal details and start your journey with us</p>
+     <button class="btn-vex secondary" id="signInBtn">Sign In</button>
+    </div>
+    <div class="overlay-panel overlay-right">
+     <h1 class="text-3xl font-bold mb-4">Welcome Back!</h1>
+     <p class="mb-6 leading-relaxed">To stay connected with us please Signin with your personal info</p>
+     <button class="btn-vex secondary" id="signUpBtn">Sign Up</button>
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <script src="script.js"></script>
+</body>
+
+</html>
