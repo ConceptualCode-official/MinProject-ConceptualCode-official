@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>3D Shadow To-Do List</title>
+ <!-- Load Tailwind CSS from CDN -->
+ <script src="https://cdn.tailwindcss.com"></script>
+ <style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+  body {
+   font-family: 'Inter', sans-serif;
+   background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   min-height: 100vh;
+   padding: 2rem;
+  }
+
+  .shadow-3d {
+   box-shadow:
+    -8px -8px 15px rgba(255, 255, 255, 0.5),
+    8px 8px 15px rgba(174, 174, 192, 0.4),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.7),
+    inset -2px -2px 5px rgba(174, 174, 192, 0.3);
+  }
+
+  .shadow-3d-button {
+   box-shadow:
+    -6px -6px 12px rgba(255, 255, 255, 0.5),
+    6px 6px 12px rgba(174, 174, 192, 0.4);
+   transition: all 0.2s ease-in-out;
+  }
+
+  .shadow-3d-button:active {
+   box-shadow:
+    inset 6px 6px 12px rgba(174, 174, 192, 0.4),
+    inset -6px -6px 12px rgba(255, 255, 255, 0.5);
+  }
+
+  .shadow-3d-button:hover {
+   transform: translateY(-2px);
+   box-shadow:
+    -8px -8px 16px rgba(255, 255, 255, 0.6),
+    8px 8px 16px rgba(174, 174, 192, 0.5);
+  }
+
+  .completed span {
+   text-decoration: line-through;
+   color: #888;
+   transition: all 0.3s ease-in-out;
+  }
+ </style>
+</head>
+
+<body class="bg-gray-100 p-8">
+
+ <!-- Main Container -->
+ <div class="w-full max-w-xl mx-auto p-8 rounded-3xl bg-gray-200 shadow-3d-container">
+  <h1 class="text-3xl sm:text-4xl font-bold text-center mb-8 text-gray-700">To-Do List</h1>
+  <div class="flex flex-col sm:flex-row gap-4 mb-8">
+   <input type="text" id="taskInput"
+    class="flex-1 p-4 rounded-xl outline-none focus:ring-2 focus:ring-blue-400 bg-gray-200 text-gray-700 shadow-3d"
+    placeholder="Add a new task..." />
+   <button id="addButton"
+    class="p-4 rounded-xl font-semibold text-lg bg-blue-500 text-white shadow-3d-button hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">Add
+    Task
+   </button>
+  </div>
+  <ul id="taskList" class="space-y-4">
+   <li class="flex items-center justify-between p-4 rounded-xl bg-gray-200 text-gray-700 shadow-3d-button">
+    <span class="flex-1 cursor-pointer select-none">Start Your</span>
+    <button class="delete-btn text-xl text-red-500 hover:text-red-700 ml-4 font-bold">
+     &times;
+    </button>
+   </li>
+  </ul>
+ </div>
+
+ <script>
+  document.addEventListener('DOMContentLoaded', () => {
+   var taskInput = document.getElementById('taskInput'), addButton = document.getElementById('addButton'), taskList = document.getElementById('taskList');
+
+   // Function to create a new list item
+   function createListItem(taskText) {
+    // Create a new li element
+    var listItem = document.createElement('li');
+    listItem.className = 'flex items-center justify-between p-4 rounded-xl bg-gray-200 text-gray-700 shadow-3d-button transition-colors';
+
+    // Create a span for the task text
+    var taskSpan = document.createElement('span');
+    taskSpan.className = 'flex-1 cursor-pointer select-none';
+    taskSpan.textContent = taskText;
+
+    // Create a delete button
+    var deleteButton = document.createElement('button');
+    deleteButton.className = 'delete-btn text-xl text-red-500 hover:text-red-700 ml-4 font-bold';
+    deleteButton.innerHTML = '&times;';
+
+    // Append span and button to the list item
+    listItem.appendChild(taskSpan);
+    listItem.appendChild(deleteButton);
+
+    return listItem;
+   }
+
+   // Add a new task to the list
+   function addTask() {
+    var taskText = taskInput.value.trim();
+    if (taskText !== "") {
+     var newListItem = createListItem(taskText);
+     taskList.appendChild(newListItem);
+     taskInput.value = ""; // Clear the input field
+    } else {
+     // Use a custom UI element for error messages instead of alert()
+     console.log("Please enter a task.");
+    }
+   }
+
+   // Event listener for the "Add Task" button
+   addButton.addEventListener('click', addTask);
+
+   // Event listener for pressing "Enter" in the input field
+   taskInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+     addTask();
+    }
+   });
+
+   // Event listener for clicks on the task list (using event delegation)
+   taskList.addEventListener('click', (e) => {
+    var target = e.target;
+
+    // If the delete button is clicked
+    if (target.classList.contains('delete-btn')) {
+     // Find the parent li and remove it
+     var listItem = target.closest('li');
+     if (listItem) {
+      listItem.remove();
+     }
+    }
+    // If the task text is clicked
+    else if (target.tagName === 'SPAN') {
+     // Toggle the 'completed' class for strikethrough effect
+     target.closest('li').classList.toggle('completed');
+    }
+   });
+  });
+ </script>
+
+</body>
+
+</html>
