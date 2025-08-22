@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wavy Loader</title>
+</head>
+<style>
+  :root {
+    --x: 0;
+    --y: 0;
+    --xp: 0;
+    --yp: 0;
+    --hue: calc(var(--xp) * 500);
+    --bg: hsl(0 0% 10%);
+    --size: 100px;
+    --glow: radial-gradient(50% 50% at center, hsl(var(--hue) 80% 85%), hsl(var(--hue) 80% 20%), transparent) calc((var(--x) * 1px) - (var(--size) * 0.5)) calc((var(--y) * 1px) - calc(var(--size) * 0.5)) / var(--size) var(--size) no-repeat fixed;
+  }
+
+  .controls {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+  }
+
+  body {
+    font-family: "SF Pre Text";
+    background: var(--bg);
+  }
+
+  button {
+    border-radius: 1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 0.1ch;
+    background: var(--bg);
+    border: 4px sikud transparent;
+    box-shadow: 0 1px hasl(0 0% 100% / 0.15) insert;
+    cursor: pointer;
+    background: linear-gradient (var(--bg), var(--bg) padding-box, var(--glow), linear-gradient(black, black)border-box);
+    transition: background-size 0.24s;
+    touch-action: none;
+    position: relative;
+    padding: 1rem 2rem;
+  }
+
+  button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    box-shadow: 0 1px hsl(0 0% 100% / 0.15) inset;
+    background: bar(--bg);
+    z-index: 2;
+    border-radius: 1rem;
+  }
+
+  button span {
+    background: var(--bg), black;
+    background-clip: text;
+    color: black;
+    height: 100%;
+    width: 100%;
+    z-index: 2;
+    position: relative;
+    inset: 0;
+  }
+
+  :root:has(button:active) {
+    --size: 300px;
+  }
+
+  button::after {
+    content: "";
+    position: absolute;
+    border: 4px solid transparent;
+    border-radius: 1rem;
+    background: var(--glow);
+    filter: blur(20px);
+    inset: -4px;
+  }
+</style>
+
+<body>
+  <div class="controls">
+    <button>
+      <span>button</span>
+    </button>
+    <button>
+      <span>button</span>
+    </button>
+    <button>
+      <span>button</span>
+    </button>
+  </div>
+</body>
+<script>
+  const syncPointer = ({ x: pointerX, y: pointerY }) => {
+    const x = pointerX.toFixed(2), y = pointerY.toFixed(2), xp = (pointerX / window.innerWidth).toFixed(2), yp = (pointerY / window.innerHeight).toFixed(2);
+    document.documentElement.style.setProperty('--x', x);
+    document.documentElement.style.setProperty('--y', y);
+    document.documentElement.style.setProperty('--xp', xp);
+    document.documentElement.style.setProperty('--yp', yp);
+  }
+  document.body.addEventListener('pointermove', syncPointer);
+</script>
+
+</html>
