@@ -361,7 +361,7 @@
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 displayError(
                     '<h2>❌ Media Not Supported</h2>' +
-                    '<p>Your web browser does not support the required webcam access (navigator.mediaDevices.getUserMedia). The particle system will run, but hand tracking will be disabled.<br>Try on: </p><a href="https://conceptualcode-official.github.io/MiniProject-ConceptualCode-official/interactive_particle_system">Interactive Particle System</a>'
+                    '<p>Your web browser does not support the required webcam access (navigator.mediaDevices.getUserMedia). The particle system will run, but hand tracking will be disabled.<br>Try on: </p><a href="https://conceptualcode-official.github.io/MinProject-ConceptualCode-official/interactive_particle_system">Interactive Particle System</a>'
                 );
                 return;
             }
@@ -394,12 +394,12 @@
                         // No camera found
                          errorMessage = 
                             '<h2>⚠️ No Camera Detected</h2>' +
-                            '<p>No webcam device was found on your system. The particle system will run, but hand tracking is disabled.<br>Try on: </p><a href="https://conceptualcode-official.github.io/MiniProject-ConceptualCode-official/interactive_particle_system">Interactive Particle System</a>';
+                            '<p>No webcam device was found on your system. The particle system will run, but hand tracking is disabled.<br>Try on: </p><a href="https://conceptualcode-official.github.io/MinProject-ConceptualCode-official/interactive_particle_system">Interactive Particle System</a>';
                     } else {
                         // Other errors (e.g., technical limitations)
                         errorMessage = 
                             '<h2>❌ Camera Error (' + error.name + ')</h2>' +
-                            '<p>A fatal error occurred while accessing the camera. Hand tracking is disabled.<br>Try on: </p><a href="https://conceptualcode-official.github.io/MiniProject-ConceptualCode-official/interactive_particle_system">Interactive Particle System</a>';
+                            '<p>A fatal error occurred while accessing the camera. Hand tracking is disabled.<br>Try on: </p><a href="https://conceptualcode-official.github.io/MinProject-ConceptualCode-official/interactive_particle_system">Interactive Particle System</a>';
                     }
                     displayError(errorMessage);
                 });
