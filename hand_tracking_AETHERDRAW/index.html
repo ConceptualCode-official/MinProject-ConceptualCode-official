@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AetherDraw 3D | Hands-Free Creative Suite</title>
+    <meta name="description" content="Futuristic hands-only 3D drawing platform" />
+
+    <!-- Scripts -->
+     <link rel="stylesheet" href="style.css"/>
+     <script type="module" src="tailwind.config.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+  </head>
+  <body class="bg-black overflow-hidden">
+
+    <!-- 3D Canvas Container -->
+    <div id="canvas-container" class="absolute inset-0 z-0"></div>
+
+    <!-- Video Input (Hidden but required for MediaPipe) -->
+    <video id="input-video" class="hidden" playsinline></video>
+
+    <!-- UI Overlay -->
+    <div id="ui-layer" class="absolute inset-0 z-10 pointer-events-none">
+
+      <!-- Header -->
+      <div class="absolute top-6 left-8 pointer-events-auto">
+        <h1 class="text-2xl font-bold tracking-tighter text-white drop-shadow-lg">
+          AETHER<span class="text-neonBlue">DRAW</span>
+        </h1>
+        <p class="text-xs text-gray-400 mt-1 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          Camera Active
+        </p>
+      </div>
+
+      <!-- Instructions -->
+      <div class="absolute bottom-8 left-8 max-w-xs text-sm text-gray-400 pointer-events-auto glass-panel p-4 rounded-xl">
+        <h3 class="text-white font-semibold mb-2 flex items-center gap-2">
+          <i data-lucide="hand" class="w-4 h-4"></i> Controls
+        </h3>
+        <ul class="space-y-2">
+          <li class="flex items-center gap-2">
+            <span class="bg-neonBlue/20 text-neonBlue px-1.5 py-0.5 rounded text-xs font-bold">L</span>
+            <span>Draw (Index Finger + Pinch)</span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="bg-neonPink/20 text-neonPink px-1.5 py-0.5 rounded text-xs font-bold">R</span>
+            <span>Select Tools (Hover + Pinch)</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Right Tool Panel -->
+      <div class="absolute right-6 top-1/2 -translate-y-1/2 flex flex-col gap-4 pointer-events-auto">
+        <div class="glass-panel p-3 rounded-2xl flex flex-col gap-3 items-center w-20 transition-all duration-300" id="tool-panel">
+
+          <!-- Tools -->
+          <div class="tool-group flex flex-col gap-2 w-full">
+            <div class="tool-btn active w-14 h-14 rounded-xl flex items-center justify-center border border-transparent hover:bg-white/5" data-tool="brush" id="btn-brush">
+              <i data-lucide="brush" class="w-6 h-6 text-white"></i>
+            </div>
+            <div class="tool-btn w-14 h-14 rounded-xl flex items-center justify-center border border-transparent hover:bg-white/5" data-tool="pencil" id="btn-pencil">
+              <i data-lucide="pencil" class="w-6 h-6 text-white"></i>
+            </div>
+            <div class="tool-btn w-14 h-14 rounded-xl flex items-center justify-center border border-transparent hover:bg-white/5" data-tool="eraser" id="btn-eraser">
+              <i data-lucide="eraser" class="w-6 h-6 text-white"></i>
+            </div>
+          </div>
+
+          <div class="h-px w-10 bg-white/10 my-1"></div>
+
+          <!-- Color Picker (Simplified for Hand Interaction) -->
+          <div class="tool-group flex flex-col gap-2 w-full items-center">
+            <div class="color-btn w-10 h-10 rounded-full border-2 border-white shadow-lg cursor-pointer transition-transform hover:scale-110" style="background-color: #00f3ff;" data-color="#00f3ff"></div>
+            <div class="color-btn w-10 h-10 rounded-full border-2 border-transparent hover:border-white/50 cursor-pointer transition-transform hover:scale-110" style="background-color: #ff00ff;" data-color="#ff00ff"></div>
+            <div class="color-btn w-10 h-10 rounded-full border-2 border-transparent hover:border-white/50 cursor-pointer transition-transform hover:scale-110" style="background-color: #ffff00;" data-color="#ffff00"></div>
+            <div class="color-btn w-10 h-10 rounded-full border-2 border-transparent hover:border-white/50 cursor-pointer transition-transform hover:scale-110" style="background-color: #ffffff;" data-color="#ffffff"></div>
+          </div>
+
+          <div class="h-px w-10 bg-white/10 my-1"></div>
+
+          <!-- Actions -->
+          <div class="tool-group flex flex-col gap-2 w-full">
+            <div class="tool-btn w-14 h-14 rounded-xl flex items-center justify-center border border-transparent hover:bg-white/5 text-red-400" data-action="clear" id="btn-clear">
+              <i data-lucide="trash-2" class="w-6 h-6"></i>
+            </div>
+            <div class="tool-btn w-14 h-14 rounded-xl flex items-center justify-center border border-transparent hover:bg-white/5 text-green-400" data-action="save" id="btn-save">
+              <i data-lucide="download" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Cursors -->
+    <div id="cursor-left" class="cursor border-neonBlue shadow-[0_0_10px_#00f3ff]">
+      <div class="cursor-label text-neonBlue">DRAW</div>
+    </div>
+    <div id="cursor-right" class="cursor border-neonPink shadow-[0_0_10px_#ff00ff]">
+      <div class="cursor-label text-neonPink">TOOL</div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center transition-opacity duration-500">
+      <div class="loader mb-6"></div>
+      <h2 class="text-xl font-bold text-white mb-2">Initializing Vision Engine</h2>
+      <p class="text-gray-400 text-sm">Please allow camera access to begin</p>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
